@@ -1,0 +1,11 @@
+- O que é o Laravel?
+    Laravel é um Framework construído através da linguagem PHP.
+    Possui muitos recursos interessantes para auziliarem no desenvolvimento de aplicação:
+        artisan;
+        migrations;
+        blade...
+    É fácil para a criação de código, não é burocrático e é muito flexibiliza muito no desenvolvimento de aplicações.
+    Tem uma estrutura de pastas muito simples, deixando o projeto bem organizado.
+    
+- Qual estrutura de código o Laravel utiliza?
+    O Laravel utiliza a estrutura MVC (Model View Controller).
