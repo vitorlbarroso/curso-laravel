@@ -9,7 +9,11 @@
     - Qual comando para instalar o Laravel via Composer?
         composer global require laravel/installer
 
-    - Qual comando para criar uma aplicação Laravel via terminal
+    - Qual comando para criar uma aplicação Laravel via terminal?
         composer create-project laravel/laravel:^version projectname
+        
+    - Como colocar o projeto Laravel para rodas?
+        cd distproject
+        php artisan serve
 
 */
