@@ -12,7 +12,7 @@
     - Qual comando para criar uma aplicação Laravel via terminal?
         composer create-project laravel/laravel:^version projectname
         
-    - Como colocar o projeto Laravel para rodas?
+    - Como colocar o projeto Laravel para rodar?
         cd distproject
         php artisan serve
 
