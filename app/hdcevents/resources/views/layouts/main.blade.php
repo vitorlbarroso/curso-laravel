@@ -33,7 +33,7 @@
                             <a href="/" class="nav-link">Eventos</a>
                         </li>
                         <li class="nav-item">
-                            <a href="/" class="nav-link">Cadastrar Evento</a>
+                            <a href="/events/create" class="nav-link">Cadastrar Evento</a>
                         </li>
                         <li class="nav-item">
                             <a href="/" class="nav-link">Entrar</a>
@@ -53,5 +53,7 @@
         <footer>
             <p>HDC Events &copy; 2022</p>
         </footer>
+        
+        <script src="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"></script>
     </body>
 </html>
