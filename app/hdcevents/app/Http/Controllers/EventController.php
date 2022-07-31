@@ -28,7 +28,20 @@ class EventController extends Controller
     {
         $event = Event::findOrFail($id);
         
-        return view('events.show', ['event' => $event]);
+        $user = auth()->user();
+        $hasUserJoined = false;
+        
+        if ($user) {
+            $userEvents = $user->eventsAsParticipants->toArray();
+            
+            foreach($userEvents as $userEvent) {
+                if ($userEvent['id'] == $id) {
+                    $hasUserJoined = true;
+                }
+            }
+        }
+        
+        return view('events.show', ['event' => $event, 'hasuserjoined' => $hasUserJoined]);
     }
     
     public function destroy($id)
@@ -90,6 +103,28 @@ class EventController extends Controller
         return redirect('/')->with('msg', 'Evento criado com sucesso!');
     }
     
+    public function joinEvent($id)
+    {
+        $user = auth()->user();
+        
+        $user->eventsAsParticipants()->attach($id);
+        
+        $event = Event::findOrFail($id);
+        
+        return redirect('/dashboard')->with('msg', 'Sua presença no evento ' . $event->title . 'foi confirmada!');
+    }
+    
+    public function leaveEvent($id)
+    {
+        $user = auth()->user();
+        
+        $user->eventsAsParticipants()->detach($id);
+        
+        $event = Event::findOrFail($id);
+        
+        return redirect('/dashboard')->with('msg', 'Sua presença no evento ' . $event->title . 'foi removida!');
+    }
+    
     public function create()
     {
         return view('events.create');
@@ -97,17 +132,26 @@ class EventController extends Controller
     
     public function edit($id)
     {
+        $user = auth()->user();
         $event = Event::findOrFail($id);
+        
+        if ($user->id != $event->user->id) {
+            return redirect('/dashboard');
+        }
         
         return view('events.edit', ['event' => $event]);
     }
     
     public function dashboard()
     {
-        $user = auth()->user();
-        
+         $user = auth()->user();
+
         $events = $user->events;
-        
-        return view('events.dashboard', ['events' => $events]);
+
+        $eventsAsParticipants = $user->eventsAsParticipants;
+
+        return view('events.dashboard', 
+            ['events' => $events, 'eventsasparticipant' => $eventsAsParticipants]
+        );
     }
 }
