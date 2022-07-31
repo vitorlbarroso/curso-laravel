@@ -31,11 +31,32 @@ class EventController extends Controller
         return view('events.show', ['event' => $event]);
     }
     
-    public function create()
+    public function destroy($id)
     {
-        return view('events.create');
+        Event::findOrFail($id)->delete();
+        
+        return redirect('/dashboard')->with('msg', 'Evento excluido com sucesso!');
     }
     
+    public function update(Request $request)
+    {
+        $data = $request->all();
+        
+        if ($request->hasFile('image') ** $request->file('image')->isValid()) {
+            $requestImage = $request->image; // Pego os dados da imagem
+            $extension = $requestImage->extension(); // Pego a extensão do arquivo
+            $imageName = md5($requestImage->getClientOriginalName() . strtotime('now')) . "." . $extension; // Seto um novo nome
+            
+            $requestImage->move(public_path('img/events'), $imageName); // Movo para a pasta de imagens de eventos
+            
+            $data['image'] = $imageName; // Defino o parâmetro a ser inserido no banco de dados
+        }
+        
+        Event::findOrFail($request->id)->update($data);
+        
+        return redirect('/dashboard')->with('msg', 'Evento editado com sucesso!');
+    }
+
     public function store(Request $request)
     {
         // Instânciando o Model de Evento
@@ -67,5 +88,26 @@ class EventController extends Controller
         
         // Redirecionando o usuário para uma página
         return redirect('/')->with('msg', 'Evento criado com sucesso!');
+    }
+    
+    public function create()
+    {
+        return view('events.create');
+    }
+    
+    public function edit($id)
+    {
+        $event = Event::findOrFail($id);
+        
+        return view('events.edit', ['event' => $event]);
+    }
+    
+    public function dashboard()
+    {
+        $user = auth()->user();
+        
+        $events = $user->events;
+        
+        return view('events.dashboard', ['events' => $events]);
     }
 }
